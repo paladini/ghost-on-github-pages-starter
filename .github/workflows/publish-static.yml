@@ -1,0 +1,27 @@
+# Template workflow for a project site (https://USER.github.io/REPO).
+# For a user site named USER.github.io, set production_domain to
+# https://USER.github.io and gh_repo to USER.github.io.
+# Enable GitHub Pages: Settings → Pages → Source: GitHub Actions
+# See https://github.com/paladini/ghost-on-github-pages/blob/master/docs/v3/CI.md
+
+name: Publish static site
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    uses: paladini/ghost-on-github-pages/.github/workflows/publish-static.yml@master
+    with:
+      production_domain: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      gh_username: ${{ github.repository_owner }}
+      gh_repo: ${{ github.event.repository.name }}
+      content_path: content
+      deploy_pages: true
